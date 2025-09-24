@@ -24,11 +24,13 @@ const App = () => {
   const [movieList, setMoviesList] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
 
-  const fetchMovies = async () => {
+  const fetchMovies = async (query) => {
     setIsLoading(true);
     setErrorMessage('')
     try{
-      const endPoint =`${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
+      const endPoint =
+      query ? `${API_BASE_URL}/search/movie?query=${encodeURIComponent(query)}`
+      : `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`;
 
       const response = await fetch(endPoint, API_OPTIONS);
       if(!response.ok){
@@ -53,8 +55,8 @@ const App = () => {
   }
 
   useEffect( ()=>{
-    fetchMovies();
-  }, [])
+    fetchMovies(searchTerm);
+  }, [searchTerm])
 
   return (
     <main>
@@ -71,7 +73,9 @@ const App = () => {
             <Spinner className='justify-center'/>
           ) : errorMessage ? (
             <p className='text-red-500'>{errorMessage}</p>
-          ) : (
+          ) : searchTerm ? (
+            <h2 className='text-white flex justify-center'>No movies Found</h2>
+          ) :(
             <ul>
               {movieList.map((movies) =>(
                 <MovieCard key={movies.id} movies={movies}/>
