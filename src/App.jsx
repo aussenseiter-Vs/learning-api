@@ -73,7 +73,7 @@ const App = () => {
             <Spinner className='justify-center'/>
           ) : errorMessage ? (
             <p className='text-red-500'>{errorMessage}</p>
-          ) : searchTerm ? (
+          ) : movieList.length === 0 ? (
             <h2 className='text-white flex justify-center'>No movies Found</h2>
           ) :(
             <ul>
