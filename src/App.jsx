@@ -67,7 +67,7 @@ const App = () => {
         <section className='all-movies'>
           <h2 className='mt-[40px]'>All movies</h2>
           {isLoading ? (
-            <Spinner/>
+            <Spinner className='flex justify-center'/>
           ) : errorMessage ? (
             <p className='text-red-500'>{errorMessage}</p>
           ) : (
