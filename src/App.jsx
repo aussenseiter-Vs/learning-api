@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { useDebounce } from "@uidotdev/usehooks";
 import React from 'react'
 import Search from './component/search.jsx'
 import Spinner from './component/Spinner.jsx';
@@ -23,6 +24,14 @@ const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [movieList, setMoviesList] = useState([]);
   const [isLoading, setIsLoading] = useState(false)
+  const [debounceSearchTerm, setDebounceSearchTerm] = useState('')
+
+  useDebounce(
+  () => setDebounceSearchTerm(searchTerm), 500, [searchTerm]
+)
+  useEffect( ()=>{
+    fetchMovies(debounceSearchTerm);
+  }, [debounceSearchTerm])
 
   const fetchMovies = async (query) => {
     setIsLoading(true);
@@ -53,10 +62,6 @@ const App = () => {
       setIsLoading(false)
     }
   }
-
-  useEffect( ()=>{
-    fetchMovies(searchTerm);
-  }, [searchTerm])
 
   return (
     <main>
